@@ -66,9 +66,22 @@ app.post("/api/users", (req, res) => {
 // Update User
 app.put("/api/users/:id", (req, res) => {
   // Get the user id
-  const changedUser = req.body;
-  const id = req.id;
-  console.log(changedUser, id);
+  const body = req.body;
+
+  const id = req.params.id;
+
+  if (!body) {
+    return res.status(400).json({
+      error: "Bad Request: User to substitute does not exist",
+    });
+  }
+
+  const changedUser = {
+    ...body,
+  };
+
+  users = users.map((user) => (user.id !== id ? user : changedUser));
+  res.json(changedUser);
 });
 
 app.delete("/api/users/:id", (req, res) => {
