@@ -1,4 +1,5 @@
 const express = require("express");
+const compression = require("compression");
 const app = express();
 const cors = require("cors");
 
@@ -10,15 +11,14 @@ const requestLogger = (request, response, next) => {
   next();
 };
 
+app.use(compression());
+
+app.use("/", express.static("build"));
 app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
 
 let users = [];
-
-app.get("/", (req, res) => {
-  res.send("<h1>Hwllo World</h1>");
-});
 
 app.get("/api/users", (req, res) => {
   console.log("now");
@@ -97,7 +97,7 @@ const unKnownEndPoint = (req, res) => {
 
 app.use(unKnownEndPoint);
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
