@@ -2,6 +2,9 @@ const express = require("express");
 const compression = require("compression");
 const app = express();
 const cors = require("cors");
+require("dotenv").config();
+
+const User = require("./models/user");
 
 const requestLogger = (request, response, next) => {
   console.log("Method:", request.method);
@@ -21,9 +24,9 @@ app.use(requestLogger);
 let users = [];
 
 app.get("/api/users", (req, res) => {
-  console.log("now");
-
-  res.json(users);
+  User.find({}).then((users) => {
+    res.json(users);
+  });
 });
 
 app.get("/api/users/:id", (req, res) => {
@@ -97,7 +100,7 @@ const unKnownEndPoint = (req, res) => {
 
 app.use(unKnownEndPoint);
 
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
