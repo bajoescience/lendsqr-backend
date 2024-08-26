@@ -127,7 +127,6 @@ app.post("/api/users", async (req, res) => {
 app.put("/api/users/:id", async (req, res) => {
   // Get the user id
   const updateObj = req.body;
-  console.log(updateObj);
 
   const id = req.params.id;
   // if (!ObjectId.isValid()) {
@@ -143,12 +142,6 @@ app.put("/api/users/:id", async (req, res) => {
   }
 
   const userToChange = await User.findById(id);
-
-  const userUpdateObj = {
-    ...userToChange,
-    organization: userToChange.organization,
-    status: updateObj.status,
-  };
 
   const changedUser = await User.findByIdAndUpdate(
     id,
